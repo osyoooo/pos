@@ -64,3 +64,20 @@ def generate_sales_report(db: Session, start_date: str, end_date: str):
         Transaction.datetime <= end_datetime
     ).scalar() or 0  # 結果がNoneの場合は0を返す
     return {"total_sales": total_sales}
+
+
+# フロントの購入ボタン用に利用
+def create_transaction(db: Session, transaction: TransactionCreate):
+    db_transaction = Transaction(**transaction.dict())
+    db.add(db_transaction)
+    db.commit()
+    db.refresh(db_transaction)
+    return db_transaction
+
+def create_transaction_detail(db: Session, transaction_detail: TransactionDetailCreate):
+    db_transaction_detail = TransactionDetail(**transaction_detail.dict())
+    db.add(db_transaction_detail)
+    db.commit()
+    db.refresh(db_transaction_detail)
+    return db_transaction_detail
+
